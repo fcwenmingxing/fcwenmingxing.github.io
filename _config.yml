@@ -2,12 +2,12 @@
 #   Main Configs   #
 # ---------------- #
 baseurl:
-url: http://fcwenmingxing.github.io
+url: http://fcwenmingixng.github.io
 date_format: "ordinal"
-title: 温明星的blog
-subtitle: "未来的逆比现在的你更优秀"
-description: "温明星的个人博客"
-keywords: 
+title: 码志
+subtitle: "打码改变人生"
+description: "马壮的个人博客"
+keywords: 码志, Zhuang Ma, mzlogin, mazhuang
 timezone: Asia/Shanghai
 encoding: "utf-8"
 side_bar_repo_limit: 5
@@ -15,12 +15,12 @@ side_bar_repo_limit: 5
 # ---------------- #
 #      Author      #
 # ---------------- #
-author: wen mingxing
-organization: 	zkh360.com
+author: Zhuang Ma
+organization: zkh360.com
 organization_url: http://www.zkh360.com
-github_username: fcwenmingxing
-location: beijing, China
-email: fcwenmingxing@126.com
+github_username: mzlogin
+location: Wuhan, China
+email: chumpma@gmail.com
 
 # ---------------- #
 #    Navigation    #
