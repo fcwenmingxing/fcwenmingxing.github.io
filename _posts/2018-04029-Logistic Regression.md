@@ -6,14 +6,10 @@ categories: machine learning
 tags: machine learning, Logistic Regression
 excerpt: 机器学习笔记。
 mathjax: true
-typora-root-url: ..
-typora-copy-images-to: ..\pic\2018-04029-Logistic Regression
 ---
 
 
 
 ## 损失函数
 
-
-
-![1525009229119](/pic/2018-04029-Logistic Regression/1525009229119.png)
+![1525009376765](../pic/2018-04029-Logistic Regression/1525009376765.png)
