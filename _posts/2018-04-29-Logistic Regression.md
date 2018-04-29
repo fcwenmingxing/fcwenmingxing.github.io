@@ -12,4 +12,4 @@ mathjax: true
 
 ## 损失函数
 
-![1525009376765](../pic/2018-04029-Logistic Regression/1525009376765.png)
+![1525009376765](/pic/2018-04029-Logistic Regression/1525009376765.png)
