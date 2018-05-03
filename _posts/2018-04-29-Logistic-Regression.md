@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "机器学习笔记之逻辑回归(Logistic Regression)"
-date:   2018-02-10 15:14:54
+date:   2018-04-29 15:14:54
 categories: 机器学习
 tags: 机器学习 Logistic-Regression 逻辑回归
 excerpt: 机器学习笔记。
@@ -16,6 +16,10 @@ typora-copy-images-to: ..\pic\2018-04-29-Logistic-Regression
 > 2. 为何损失函数用交叉熵（对数损失）
 > 3. 梯度推导
 > 4. 延伸：梯度下降方式。。。。
+
+
+
+[TOC]
 
 逻辑回归是分类当中极为常用的手段，因此，掌握其内在原理是非常必要的。
 
