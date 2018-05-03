@@ -17,9 +17,10 @@ typora-copy-images-to: ..\pic\2018-04-29-Logistic-Regression
 > 3. 梯度推导
 > 4. 延伸：梯度下降方式。。。。
 
+* content
+{:toc}
 
 
-[TOC]
 
 逻辑回归是分类当中极为常用的手段，因此，掌握其内在原理是非常必要的。
 
