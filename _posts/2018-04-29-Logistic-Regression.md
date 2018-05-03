@@ -10,6 +10,8 @@ typora-root-url: ..
 typora-copy-images-to: ..\pic\2018-04-29-Logistic-Regression
 ---
 
+* content {:toc}
+
 知识点
 
 > 1. 什么是$Sigmoid function$函数，为何用$Sigmoid function$函数
