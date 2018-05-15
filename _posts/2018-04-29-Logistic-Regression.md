@@ -7,7 +7,7 @@ tags: 机器学习 Logistic-Regression 逻辑回归
 excerpt: 机器学习笔记。
 mathjax: true
 typora-root-url: ..
-typora-copy-images-to: ..\pic\2018-04-29-Logistic-Regression
+typora-copy-images-to: ..\inner_ref\2018-04-29-Logistic-Regression
 ---
 
 * content {:toc}
@@ -28,32 +28,32 @@ typora-copy-images-to: ..\pic\2018-04-29-Logistic-Regression
 
 ### 问题描述
 
-假设有一个二分类问题，输出为$y∈{0,1}$, 而线性回归模型产生的预测值为$z=w^Tx+b$是实数值，我们希望有一个理想的阶跃函数来帮我们实现z值到0/1值的转化。 
+假设有一个二分类问题，输出为$y∈{0,1}​$, 而线性回归模型产生的预测值为$z=w^Tx+b​$是实数值，我们希望有一个理想的阶跃函数来帮我们实现z值到0/1值的转化。 
 
-![](/pic/2018-04-29-Logistic-Regression/1525011538497.png)
+![x](/inner_ref/2018-04-29-Logistic-Regression/1525011538497.png)
 
 然而该函数不连续，我们希望有一个单调可微的函数来供我们使用，于是便找到了$Sigmoid function$来替代。
 
-![1525011628555](/pic/2018-04-29-Logistic-Regression/1525011628555.png)
+![1525011628555](/inner_ref/2018-04-29-Logistic-Regression/1525011628555.png)
 
 两者的图像如下图所示
 
-![1525011650982](/pic/2018-04-29-Logistic-Regression/1525011650982.png)
+![1525011650982](/inner_ref/2018-04-29-Logistic-Regression/1525011650982.png)
 
 ### 代价函数定义
 
 好了，所要用的几个函数我们都好了，接下来要做的就是根据给定的训练集，把参数w给求出来了。要找参数$w$，首先就是得把代价函数（cost function）给定义出来，也就是目标函数。 我们第一个想到的自然是模仿线性回归的做法，利用误差平方和来当代价函数。
 
-![1525012311068](/pic/2018-04-29-Logistic-Regression/1525012311068.png)
+![1525012311068](/inner_ref/2018-04-29-Logistic-Regression/1525012311068.png)
 
 其中，$z^(i)=w^Tx^{(i)}+b$，$i$表示第$i$个样本点，$y^{(i)}$表示第i个样本的真实值，$ϕ(z^{(i)})$表示第$i$个样本的预测值。 
 这时，如果我们将$ϕ^{z(i)}=1/(1+e^{−z^{(i)}})$代入的话，会发现这时一个非凸函数，这就意味着代价函数有着许多的局部最小值，这不利于我们的求解。 
 
-![1525012552185](/pic/2018-04-29-Logistic-Regression/1525012552185.png)
+![1525012552185](/inner_ref/2018-04-29-Logistic-Regression/1525012552185.png)
 
 那么我们不妨来换一个思路解决这个问题。前面，我们提到了$ϕ(z)$可以视为类1的后验估计，所以我们有 
 
-![1525012602474](/pic/2018-04-29-Logistic-Regression/1525012602474.png)
+![1525012602474](/inner_ref/2018-04-29-Logistic-Regression/1525012602474.png)
 
 其中，$p(y=1|x;w)$表示给定$w$，那么$x$点$y=1$的概率大小。
 
