@@ -10,7 +10,8 @@ typora-root-url: ..
 typora-copy-images-to: ..\inner_ref\2018-04-29-Logistic-Regression
 ---
 
-* content {:toc}
+* content
+{:toc}
 
 知识点
 
