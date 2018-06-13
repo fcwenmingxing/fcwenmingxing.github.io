@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)https://www.cnblogs.com/shixiangwan/p/7532830.html -->
+<html lang="zh-cn" class="hb-loaded"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="same-origin">
+<title>常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园</title>
+<link type="text/css" rel="stylesheet" href="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/bundle-LessIsMore.css">
+<link type="text/css" rel="stylesheet" href="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/304354.css">
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/bundle-LessIsMore-mobile.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/shixiangwan/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/shixiangwan/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/shixiangwan/wlwmanifest.xml">
+<script async="" src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/analytics.js.下载"></script><script src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/jquery-2.2.0.min.js.下载"></script>
+<script type="text/javascript">var currentBlogApp = 'shixiangwan', cb_enable_mathjax=true;var isLogined=false;</script>
+<script type="text/x-mathjax-config;executed=true">
+    MathJax.Hub.Config({
+        tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']], processClass: 'blogpost-body', processEscapes: true },
+        TeX: { 
+            equationNumbers: { autoNumber: ['AMS'], useLabelIds: true }, extensions: ['extpfeil.js'] },
+            'HTML-CSS': { linebreaks: { automatic: true } },
+            SVG: { linebreaks: { automatic: true } }
+        });
+    </script><script src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/MathJax.js.下载"></script>
+<script src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/blog-common.js.下载" type="text/javascript"></script>
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+<body huaban_collector_injected="true"><div id="MathJax_Message" style="display: none;"></div>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<link href="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/cnblogs2.css" rel="stylesheet">
+<style type="text/css">body { background: #98C17B no-repeat top center; background-attachment: fixed }
+input[type="button"].btn_my_zzk { width: 60px }
+#home { }
+#blogTitle .title { position: relative; background: none }
+.portrait { display: block; position: absolute; left: 0; top: 0; width: 100px; height: 100px; overflow: hidden; background: white url("http://images.cnblogs.com/cnblogs_com/shixiangwan/1083939/t_9321757.jpg") no-repeat left center }
+.headermaintitle:hover .portrait { }
+::-webkit-scrollbar    { width: 6px; height: 6px }
+::-webkit-scrollbar-thumb    { background-color: #55895B }
+::-webkit-scrollbar-thumb:hover    { background-color: #55895B }
+::selection { color: white; background: #018ee8 }
+#topics a:hover { padding: 1px 3px 1px 3px; text-decoration: none; color: #018ee8; background-color: transparent }
+.postTitle { padding-left: 0; background: none }
+.subtitle { padding-left: 0 }
+#blogTitle { padding-bottom: 0 }
+#nav_q,#nav_ing,#nav_newpost { display: none !important }
+#sideBar { border-top-width: 1px !important }
+#navigator { margin-bottom: 0 }
+#sideBarMain { margin: 0; padding-right: 20px; padding-left: 5px }
+.catListTitle { border-top-color: #CECECE; border-right-color: #CECECE; border-bottom-color: #CECECE }
+#home { margin: 150px auto 50px auto }
+#green_channel { width: auto }
+#tbCommentBody { width: 100%; display: block }</style>
+<!--PageBeginHtml Block End-->
+
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+		
+<!--done-->
+<div class="title"><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/shixiangwan/"><span class="portrait"></span>蓝鲸王子</a></div>
+<div class="subtitle">机器学习、深度学习、分布式计算研究者</div>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li id="nav_sitehome"><a id="blog_nav_sitehome" class="menu" href="http://www.cnblogs.com/">博客园</a></li>
+<li id="nav_myhome"><a id="blog_nav_myhome" class="menu" href="http://www.cnblogs.com/shixiangwan/">首页</a></li>
+<li id="nav_newpost"></li>
+<li id="nav_contact"><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/%E8%93%9D%E9%B2%B8%E7%8E%8B%E5%AD%90">联系</a></li>
+<li id="nav_rss"><a id="blog_nav_rss" class="menu" href="http://www.cnblogs.com/shixiangwan/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="http://www.cnblogs.com/shixiangwan/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li id="nav_admin"><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<!--done-->
+随笔-85&nbsp;
+文章-0&nbsp;
+评论-15&nbsp;
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="http://www.cnblogs.com/shixiangwan/p/7532830.html">常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等）</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><p>我们每个人都会在我们的生活或者工作中遇到各种各样的最优化问题，比如每个企业和个人都要考虑的一个问题“在一定成本下，如何使利润最大化”等。最优化方法是一种数学方法，它是研究在给定约束之下如何寻求某些因素(的量)，以使某一(或某些)指标达到最优的一些学科的总称。随着学习的深入，博主越来越发现最优化方法的重要性，学习和工作中遇到的大多问题都可以建模成一种最优化模型进行求解，比如我们现在学习的机器学习算法，大部分的机器学习算法的本质都是建立优化模型，通过最优化方法对目标函数（或损失函数）进行优化，从而训练出最好的模型。常见的最优化方法有梯度下降法、牛顿法和拟牛顿法、共轭梯度法等等。</p>
+<h3 class="First">1. 梯度下降法（Gradient Descent）</h3>
+<p>梯度下降法是最早最简单，也是最为常用的最优化方法。梯度下降法实现简单，当目标函数是凸函数时，梯度下降法的解是全局解。一般情况下，其解不保证是全局最优解，梯度下降法的速度也未必是最快的。<span style="color: #ff0000"><strong>梯度下降法的优化思想是用当前位置负梯度方向作为搜索方向，因为该方向为当前位置的最快下降方向，所以也被称为是”最速下降法“。最速下降法越接近目标值，步长越小，前进越慢。</strong></span>梯度下降法的搜索迭代示意图如下图所示：</p>
+<p><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/1022856-20170916201932735-243646199.png" alt=""></p>
+<p><span style="color: #ff0000"><strong>梯度下降法的缺点：</strong></span></p>
+<p><span style="color: #ff0000"><strong>　　（1）靠近极小值时收敛速度减慢，如下图所示；</strong></span></p>
+<p><span style="color: #ff0000"><strong>　　（2）直线搜索时可能会产生一些问题；</strong></span></p>
+<p><span style="color: #ff0000"><strong>　　（3）可能会“之字形”地下降。</strong></span></p>
+<p>&nbsp;</p>
+<p>&nbsp;<img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/1022856-20170916202005797-174952848.png" alt=""></p>
+<p>从上图可以看出，梯度下降法在接近最优解的区域收敛速度明显变慢，利用梯度下降法求解需要很多次的迭代。</p>
+<p>在机器学习中，基于基本的梯度下降法发展了两种梯度下降方法，分别为随机梯度下降法和批量梯度下降法。</p>
+<p>比如对一个线性回归（Linear Logistics）模型，假设下面的h(x)是要拟合的函数，J(theta)为损失函数，theta是参数，要迭代求解的值，theta求解出来了那最终要拟合的函数h(theta)就出来了。其中m是训练集的样本个数，n是特征的个数。</p>
+<p>&nbsp;<img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/1022856-20170916202042188-838465200.png" alt="" width="141" height="68"></p>
+<p><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/1022856-20170916202049594-161217114.png" alt="" width="236" height="60"></p>
+<p><strong>1）批量梯度下降法（Batch Gradient Descent，BGD）</strong></p>
+<p>（1）将J(theta)对theta求偏导，得到每个theta对应的的梯度：</p>
+<p><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/20130525190603437" alt="" width="250" height="60" data-bd-imgshare-binded="1"></p>
+<p>（2）由于是要最小化风险函数，所以按每个参数theta的梯度负方向，来更新每个theta：</p>
+<p><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/20130525190954867" alt="" width="260" height="60" data-bd-imgshare-binded="1"></p>
+<p>（3）从上面公式可以注意到，它得到的是一个全局最优解，但是每迭代一步，都要用到训练集所有的数据，如果m很大，那么可想而知这种方法的迭代速度会相当的慢。所以，这就引入了另外一种方法——随机梯度下降。</p>
+<p>对于批量梯度下降法，样本个数m，x为n维向量，一次迭代需要把m个样本全部带入计算，迭代一次计算量为m*n<sup>2</sup>。</p>
+<p><strong>2）随机梯度下降（Stochastic Gradient Descent，SGD）</strong></p>
+<p>（1）上面的风险函数可以写成如下这种形式，损失函数对应的是训练集中每个样本的粒度，而上面批量梯度下降对应的是所有的训练样本：</p>
+<p><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/20130525191712216" alt="" width="440" height="120" data-bd-imgshare-binded="1"></p>
+<p>（2）每个样本的损失函数，对theta求偏导得到对应梯度，来更新theta：</p>
+<p><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/20130525192139662" alt="" width="230" height="45" data-bd-imgshare-binded="1"></p>
+<p>（3）随机梯度下降是通过每个样本来迭代更新一次，如果样本量很大的情况（例如几十万），那么可能只用其中几万条或者几千条的样本，就已经将theta迭代到最优解了，对比上面的批量梯度下降，迭代一次需要用到十几万训练样本，一次迭代不可能最优，如果迭代10次的话就需要遍历训练样本10次。但是，SGD伴随的一个问题是噪音较BGD要多，使得SGD并不是每次迭代都向着整体最优化方向。</p>
+<p>随机梯度下降每次迭代只使用一个样本，迭代一次计算量为n<sup>2</sup>，当样本个数m很大的时候，随机梯度下降迭代一次的速度要远高于批量梯度下降方法。<span style="color: #ff0000"><strong>两者的关系可以这样理解：随机梯度下降方法以损失很小的一部分精确度和增加一定数量的迭代次数为代价，换取了总体的优化效率的提升。增加的迭代次数远远小于样本的数量。</strong></span></p>
+<p><span style="color: #ff0000"><strong>对批量梯度下降法和随机梯度下降法的总结：</strong></span></p>
+<p><span style="color: #ff0000"><strong>批量梯度下降---最小化所有训练样本的损失函数，使得最终求解的是全局的最优解，即求解的参数是使得风险函数最小，但是对于大规模样本问题效率低下。</strong></span></p>
+<p><span style="color: #ff0000"><strong>随机梯度下降---最小化每条样本的损失函数，虽然不是每次迭代得到的损失函数都向着全局最优方向， 但是大的整体的方向是向全局最优解的，最终的结果往往是在全局最优解附近，适用于大规模训练样本情况。</strong></span></p>
+<p>&nbsp;</p>
+<h3 class="First">2. 牛顿法和拟牛顿法（Newton's method &amp;&nbsp;Quasi-Newton Methods）</h3>
+<p>　　<strong>1）牛顿法（Newton's method）</strong></p>
+<p>　　牛顿法是一种在实数域和复数域上近似求解方程的方法。方法使用函数<em>f&nbsp;</em>(<em>x</em>)的泰勒级数的前面几项来寻找方程<em>f&nbsp;</em>(<em>x</em>) = 0的根。牛顿法最大的特点就在于它的收敛速度很快。</p>
+<h2><span style="font-size: 14px">　　具体步骤：</span></h2>
+<p>　　首先，选择一个接近函数&nbsp;<em>f&nbsp;</em>(<em>x</em>)零点的&nbsp;<em>x</em><sub>0</sub>，计算相应的&nbsp;<em>f&nbsp;</em>(<em>x</em><sub>0</sub>)&nbsp;和切线斜率<em>f &nbsp;'&nbsp;</em>(<em>x</em><sub>0</sub>)（这里<em>f '&nbsp;</em>表示函数&nbsp;<em>f &nbsp;</em>的导数）。然后我们计算穿过点(<em>x</em><sub>0, &nbsp;</sub><em>f &nbsp;</em>(<em>x</em><sub>0</sub>))&nbsp;并且斜率为<em>f&nbsp;</em>'(<em>x</em><sub>0</sub>)的直线和&nbsp;<em>x&nbsp;</em>轴的交点的<em>x</em>坐标，也就是求如下方程的解：</p>
+<p><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/222309088311820.png" alt="" data-bd-imgshare-binded="1"></p>
+<p>　　我们将新求得的点的&nbsp;<em>x&nbsp;</em>坐标命名为<em>x</em><sub>1</sub>，通常<em>x</em><sub>1</sub>会比<em>x</em><sub>0</sub>更接近方程<em>f &nbsp;</em>(<em>x</em>) = 0的解。因此我们现在可以利用<em>x</em><sub>1</sub>开始下一轮迭代。迭代公式可化简为如下所示：</p>
+<p><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/222309221284615.png" alt="" data-bd-imgshare-binded="1"></p>
+<p>　　已经证明，如果<em>f &nbsp;</em>'&nbsp;是连续的，并且待求的零点<em>x</em>是孤立的，那么在零点<em>x</em>周围存在一个区域，只要初始值<em>x</em><sub>0</sub>位于这个邻近区域内，那么牛顿法必定收敛。 并且，如果<em>f &nbsp;</em>' (<em>x</em>)不为0, 那么牛顿法将具有平方收敛的性能. 粗略的说，这意味着每迭代一次，牛顿法结果的有效数字将增加一倍。下图为一个牛顿法执行过程的例子。</p>
+<p>　　由于牛顿法是基于当前位置的切线来确定下一次的位置，所以牛顿法又被很形象地称为是"切线法"。牛顿法的搜索路径（二维情况）如下图所示：</p>
+<p>　　牛顿法搜索动态示例图：</p>
+<p>&nbsp;<img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/1022856-20170916202719078-1588446775.gif" alt=""></p>
+<p><span style="color: #ff0000"><strong>关于牛顿法和梯度下降法的效率对比：</strong></span></p>
+<p><span style="color: #ff0000"><strong>　　从本质上去看，牛顿法是二阶收敛，梯度下降是一阶收敛，所以牛顿法就更快。如果更通俗地说的话，比如你想找一条最短的路径走到一个盆地的最底部，梯度下降法每次只从你当前所处位置选一个坡度最大的方向走一步，牛顿法在选择方向时，不仅会考虑坡度是否够大，还会考虑你走了一步之后，坡度是否会变得更大。所以，可以说牛顿法比梯度下降法看得更远一点，能更快地走到最底部。（牛顿法目光更加长远，所以少走弯路；相对而言，梯度下降法只考虑了局部的最优，没有全局思想。）</strong></span></p>
+<p><span style="color: #ff0000"><strong>　　根据wiki上的解释，从几何上说，牛顿法就是用一个二次曲面去拟合你当前所处位置的局部曲面，而梯度下降法是用一个平面去拟合当前的局部曲面，通常情况下，二次曲面的拟合会比平面更好，所以牛顿法选择的下降路径会更符合真实的最优下降路径。</strong></span></p>
+<p>&nbsp;<img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/1022856-20170916202746985-1087770168.png" alt=""></p>
+<p>注：红色的牛顿法的迭代路径，绿色的是梯度下降法的迭代路径。</p>
+<p><span style="color: #ff0000"><strong>牛顿法的优缺点总结：</strong></span></p>
+<p><span style="color: #ff0000">　　<strong>优点：二阶收敛，收敛速度快；</strong></span></p>
+<p><span style="color: #ff0000"><strong>　　缺点：牛顿法是一种迭代算法，每一步都需要求解目标函数的Hessian矩阵的逆矩阵，计算比较复杂。</strong></span></p>
+<p>　　<strong>2）拟牛顿法（Quasi-Newton Methods）</strong></p>
+<p>　　拟牛顿法是求解非线性优化问题最有效的方法之一，于20世纪50年代由美国Argonne国家实验室的物理学家W.C.Davidon所提出来。Davidon设计的这种算法在当时看来是非线性优化领域最具创造性的发明之一。不久R. Fletcher和M. J. D. Powell证实了这种新的算法远比其他方法快速和可靠，使得非线性优化这门学科在一夜之间突飞猛进。</p>
+<p>　　<span style="color: #ff0000"><strong>拟牛顿法的本质思想是改善牛顿法每次需要求解复杂的Hessian矩阵的逆矩阵的缺陷，它使用正定矩阵来近似Hessian矩阵的逆，从而简化了运算的复杂度。</strong></span>拟牛顿法和最速下降法一样只要求每一步迭代时知道目标函数的梯度。通过测量梯度的变化，构造一个目标函数的模型使之足以产生超线性收敛性。这类方法大大优于最速下降法，尤其对于困难的问题。另外，因为拟牛顿法不需要二阶导数的信息，所以有时比牛顿法更为有效。如今，优化软件中包含了大量的拟牛顿算法用来解决无约束，约束，和大规模的优化问题。</p>
+<p>　　<strong>具体步骤：</strong></p>
+<p>　　拟牛顿法的基本思想如下。首先构造目标函数在当前迭代x<sub>k</sub>的二次模型：</p>
+<div class="para">
+<div class="layoutinline log-set-param" data-layout="inline"><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/222253268161863.png" alt="" data-bd-imgshare-binded="1"></div>
+　　这里B<sub>k</sub>是一个对称正定矩阵，于是我们取这个二次模型的最优解作为搜索方向，并且得到新的迭代点：</div>
+<div class="para">
+<div class="layoutinline log-set-param" data-layout="inline"><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/222254384106201.png" alt="" data-bd-imgshare-binded="1"></div>
+　　其中我们要求步长a<sub>k</sub>&nbsp;满足Wolfe条件。这样的迭代与牛顿法类似，区别就在于用近似的Hesse矩阵B<sub>k</sub>&nbsp;
+<div class="layoutinline log-set-param" style="display: inline !important" data-layout="inline">代替真实的Hesse矩阵。所以拟牛顿法最关键的地方就是每一步迭代中矩阵B<sub>k</sub></div>
+的更新。现在假设得到一个新的迭代x<sub>k+1</sub>，并得到一个新的二次模型：</div>
+<div class="para">
+<div class="layoutblockcenter log-set-param" data-layout="blockcenter"><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/222256385508904.png" alt="" data-bd-imgshare-binded="1"></div>
+</div>
+<div class="para">　　我们尽可能地利用上一步的信息来选取B<sub>k</sub>。具体地，我们要求
+<div class="layoutinline log-set-param" style="display: inline !important" data-layout="inline">&nbsp;</div>
+</div>
+<div class="para">
+<div class="layoutinline log-set-param" data-layout="inline"><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/222257530664204.png" alt="" data-bd-imgshare-binded="1"></div>
+<em id="__mceDel">　　</em>从而得到</div>
+<div class="para"><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/222258392223638.png" alt="" data-bd-imgshare-binded="1"></div>
+<div class="para">　　这个公式被称为割线方程。常用的拟牛顿法有DFP算法和BFGS算法。</div>
+<h3 class="First">3. 共轭梯度法（Conjugate Gradient）</h3>
+<p>&nbsp;</p>
+<div class="para"><strong>共轭梯度法是介于最速下降法与牛顿法之间的一个方法，它仅需利用一阶导数信息，但克服了最速下降法收敛慢的缺点，又避免了牛顿法需要存储和计算Hesse矩阵并求逆的缺点，共轭梯度法不仅是解决大型线性方程组最有用的方法之一，也是解大型非线性最优化最有效的算法之一。</strong>&nbsp;在各种优化算法中，共轭梯度法是非常重要的一种。其优点是所需存储量小，具有步收敛性，稳定性高，而且不需要任何外来参数。</div>
+<div class="para">　　具体的实现步骤请参加<a href="https://en.wikipedia.org/wiki/Conjugate_gradient_method#Example_code_in_MATLAB" target="_blank">wiki百科共轭梯度法</a>。</div>
+<div class="para">　　下图为共轭梯度法和梯度下降法搜索最优解的路径对比示意图：</div>
+<div class="para"><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/1022856-20170916202934203-1179802638.png" alt="">&nbsp;</div>
+<div class="para">注：绿色为梯度下降法，红色代表共轭梯度法</div>
+<p>&nbsp;</p>
+<div class="para">
+<h3 class="First">4. 启发式优化方法</h3>
+<p>　　启发式方法指人在解决问题时所采取的一种根据经验规则进行发现的方法。其特点是在解决问题时,利用过去的经验,选择已经行之有效的方法，而不是系统地、以确定的步骤去寻求答案。启发式优化方法种类繁多，包括经典的模拟退火方法、遗传算法、蚁群算法以及粒子群算法等等。</p>
+<p>　　还有一种特殊的优化算法被称之多目标优化算法，它主要针对同时优化多个目标（两个及两个以上）的优化问题，这方面比较经典的算法有NSGAII算法、MOEA/D算法以及人工免疫算法等。</p>
+</div>
+<h3 class="First">&nbsp;5. 解决约束优化问题——拉格朗日乘数法</h3>
+<div class="para">　　有关拉格朗日乘数法的介绍请见另一篇博客：<a href="http://www.cnblogs.com/maybe2030/p/4946256.html" target="_blank">《拉格朗日乘数法》</a></div>
+<div class="para">&nbsp;</div>
+<p>&nbsp;参考：http://www.cnblogs.com/maybe2030/p/4751804.html</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory">分类: <a href="http://www.cnblogs.com/shixiangwan/category/986082.html" target="_blank">算法学习</a></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info"><div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(7532830,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+            <a id="green_channel_follow" onclick="follow(&#39;825da44a-6075-e611-9fc1-ac853d9f53cc&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/shixiangwan/" target="_blank"><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/20170404171950.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/shixiangwan/">蓝鲸王子</a><br>
+            <a href="http://home.cnblogs.com/u/shixiangwan/followees">关注 - 4</a><br>
+            <a href="http://home.cnblogs.com/u/shixiangwan/followers">粉丝 - 15</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;825da44a-6075-e611-9fc1-ac853d9f53cc&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(7532830,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">6</span>
+    </div>
+    <div class="buryit" onclick="votePost(7532830,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/shixiangwan/p/7530015.html" class="p_n_p_prefix">« </a> 上一篇：<a href="http://www.cnblogs.com/shixiangwan/p/7530015.html" title="发布于2017-09-16 09:27">数据结构中的各种树浅谈</a><br><a href="http://www.cnblogs.com/shixiangwan/p/7532858.html" class="p_n_p_prefix">» </a> 下一篇：<a href="http://www.cnblogs.com/shixiangwan/p/7532858.html" title="发布于2017-09-16 20:41">深度解读最流行的优化算法：梯度下降</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2017-09-16 20:32</span> <a href="http://www.cnblogs.com/shixiangwan/">蓝鲸王子</a> 阅读(<span id="post_view_count">5196</span>) 评论(<span id="post_comment_count">2</span>)  <a href="https://i.cnblogs.com/EditPosts.aspx?postid=7532830" rel="nofollow">编辑</a> <a href="https://www.cnblogs.com/shixiangwan/p/7532830.html#" onclick="AddToWz(7532830);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=304354,cb_entryId=7532830,cb_blogApp=currentBlogApp,cb_blogUserGuid='825da44a-6075-e611-9fc1-ac853d9f53cc',cb_entryCreatedDate='2017/9/16 20:32:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"><div id="comments_pager_top"></div>
+<!--done-->
+<div class="feedback_area_title">评论列表</div>
+<div class="feedbackNoItems"></div>
+	
+
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/shixiangwan/p/7532830.html#3960367" class="layer">#1楼</a><a name="3960367" id="comment_anchor_3960367"></a>  <span class="comment_date">2018-04-24 23:17</span> <a id="a_comment_author_3960367" href="http://home.cnblogs.com/u/1350827/" target="_blank">jiahcen</a> <a href="http://msg.cnblogs.com/send/jiahcen" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3960367" class="blog_comment_body">厉害  感谢博主分享！！！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3960367,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3960367,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/shixiangwan/p/7532830.html#3969707" class="layer">#2楼</a><a name="3969707" id="comment_anchor_3969707"></a><span id="comment-maxId" style="display:none;">3969707</span><span id="comment-maxDate" style="display:none;">2018/5/8 9:13:41</span>  <span class="comment_date">2018-05-08 09:13</span> <a id="a_comment_author_3969707" href="http://www.cnblogs.com/wukong0214/" target="_blank">无空0214</a> <a href="http://msg.cnblogs.com/send/%E6%97%A0%E7%A9%BA0214" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3969707" class="blog_comment_body">牛牛牛牛</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3969707,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3969707,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3969707_avatar" style="display:none;">http://pic.cnblogs.com/face/u340571.jpg?id=13175241</span>
+			</div>
+		</div>
+	<div id="comments_pager_bottom"></div></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/shixiangwan/p/7532830.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/shixiangwan/p/7532830.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><li><a href="http://www.ucancode.com/index.htm" target="_blank">【推荐】超50万VC++源码: 大型组态工控、电力仿真CAD与GIS源码库！</a></li><li><a href="https://www.yunqi2050.com/" target="_blank">【活动】2050 大会 - 年青人因科技而团聚（5.26-5.27 杭州·云栖小镇）</a></li><li><a href="http://r.h5king.com/r/?rno=1881" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-民生&#39;)">【活动】缺钱怎么办？5万内你尽管花！</a></li><li><a href="http://clickc.admaster.com.cn/c/a105960,b2436452,c1705,i0,m101,8a1,8b2,h" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-DevCloud&#39;)">【推荐】华为云DevCloud精彩活动集结，重磅福利，免费领取！</a></li><li><a href="https://cloud.tencent.com/act/first_purchase?fromSource=gwzcw.919198.919198.919198" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-腾讯云&#39;)">【活动】腾讯云云服务器新购特惠，5折上云</a></li><li><a href="http://challenge.xfyun.cn/?ch=bk" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-xfyun&#39;)">【大赛】2018首届“顶天立地”AI开发者大赛</a></li></div>
+<div id="opt_under_post"></div>
+<div id="cnblogs_c1" class="c_ad_block"><a onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;C1&#39;);" href="https://cloud.tencent.com/product/tac?fromSource=gwzcw.924353.924353.924353" target="_blank"><img width="300" height="250" src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/24442-20180509134043877-1617765201.jpg" alt="腾讯云0509"></a></div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="https://news.cnblogs.com/n/596860/" target="_blank">阿里健康2018财年营收超24亿元 首次扭亏为盈</a><br> ·  <a href="https://news.cnblogs.com/n/596859/" target="_blank">柳传志再度发声：这是一起动机极为恶劣的阴谋</a><br> ·  <a href="https://news.cnblogs.com/n/596858/" target="_blank">苹果：iPhone有数百个原型机 我们从不抄袭</a><br> ·  <a href="https://news.cnblogs.com/n/596854/" target="_blank">三星电子在韩员工数量突破10万大关 月薪平均4.5万元</a><br> ·  <a href="https://news.cnblogs.com/n/596815/" target="_blank">老罗看了会流泪，这才是昨晚应该刷屏的生产力工具</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="cnblogs_c2" class="c_ad_block"><a href="http://click.aliyun.com/m/34770/" target="_blank"><img src="./常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等） - 蓝鲸王子 - 博客园_files/TB1gBPhgZLJ8KJjy0FnXXcFDpXa-468-60.jpg" alt="" style="width: 468px; height: 60px;"></a></div>
+<div id="under_post_kb"><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/596164/" target="_blank">评审的艺术——谈谈现实中的代码评审</a><br> ·  <a href="http://kb.cnblogs.com/page/577233/" target="_blank">如何高效学习</a><br> ·  <a href="http://kb.cnblogs.com/page/578689/" target="_blank">如何成为优秀的程序员？</a><br> ·  <a href="http://kb.cnblogs.com/page/594930/" target="_blank">菜鸟工程师的超神之路 -- 从校园到职场</a><br> ·  <a href="http://kb.cnblogs.com/page/593985/" target="_blank">如何识别人的技术能力和水平？</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"><div id="profile_block">昵称：<a href="https://home.cnblogs.com/u/shixiangwan/">蓝鲸王子</a><br>园龄：<a href="https://home.cnblogs.com/u/shixiangwan/" title="入园时间：2016-09-08">1年8个月</a><br>粉丝：<a href="https://home.cnblogs.com/u/shixiangwan/followers/">15</a><br>关注：<a href="https://home.cnblogs.com/u/shixiangwan/followees/">4</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="follow(&#39;825da44a-6075-e611-9fc1-ac853d9f53cc&#39;)">+加关注</a></div><script>getFollowStatus('825da44a-6075-e611-9fc1-ac853d9f53cc')</script></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="calendar"><div id="blog-calendar" style=""><table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2018/04/01&#39;);return false;">&lt;</a></td><td align="center">2018年5月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2018/06/01&#39;);return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" align="center" abbr="日" scope="col">日</th><th class="CalDayHeader" align="center" abbr="一" scope="col">一</th><th class="CalDayHeader" align="center" abbr="二" scope="col">二</th><th class="CalDayHeader" align="center" abbr="三" scope="col">三</th><th class="CalDayHeader" align="center" abbr="四" scope="col">四</th><th class="CalDayHeader" align="center" abbr="五" scope="col">五</th><th class="CalDayHeader" align="center" abbr="六" scope="col">六</th></tr><tr><td class="CalOtherMonthDay" align="center">29</td><td class="CalOtherMonthDay" align="center">30</td><td align="center">1</td><td align="center">2</td><td align="center">3</td><td align="center">4</td><td class="CalWeekendDay" align="center">5</td></tr><tr><td class="CalWeekendDay" align="center">6</td><td align="center">7</td><td align="center">8</td><td align="center"><a href="http://www.cnblogs.com/shixiangwan/archive/2018/05/09.html"><u>9</u></a></td><td align="center">10</td><td align="center">11</td><td class="CalWeekendDay" align="center">12</td></tr><tr><td class="CalWeekendDay" align="center">13</td><td align="center">14</td><td align="center">15</td><td align="center">16</td><td class="CalTodayDay" align="center">17</td><td align="center">18</td><td class="CalWeekendDay" align="center">19</td></tr><tr><td class="CalWeekendDay" align="center">20</td><td align="center">21</td><td align="center">22</td><td align="center">23</td><td align="center">24</td><td align="center">25</td><td class="CalWeekendDay" align="center">26</td></tr><tr><td class="CalWeekendDay" align="center">27</td><td align="center">28</td><td align="center">29</td><td align="center">30</td><td align="center">31</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td></tr><tr><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td><td class="CalOtherMonthDay" align="center">7</td><td class="CalOtherMonthDay" align="center">8</td><td class="CalOtherMonthDay" align="center">9</td></tr>
+</tbody></table></div><script type="text/javascript">loadBlogDefaultCalendar();</script></div>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><div id="sidebar_search" class="sidebar-block">
+<div id="sidebar_search" class="mySearch">
+<h3 class="catListTitle">搜索</h3>
+<div id="sidebar_search_box">
+<div id="widget_my_zzk" class="div_my_zzk"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk"></div>
+<div id="widget_my_google" class="div_my_zzk"><input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event)" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk"></div>
+</div>
+</div>
+
+</div><div id="sidebar_toptags" class="sidebar-block"></div><div id="sidebar_categories">
+<div class="catListPostCategory">
+<h3 class="catListTitle">随笔分类<span style="font-size:11px;font-weight:normal">(87)</span></h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="http://www.cnblogs.com/shixiangwan/category/947928.html">操作系统(14)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="http://www.cnblogs.com/shixiangwan/category/903052.html">分布式计算(10)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="http://www.cnblogs.com/shixiangwan/category/947927.html">高性能计算(3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_3" href="http://www.cnblogs.com/shixiangwan/category/903050.html">机器学习(18)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_4" href="http://www.cnblogs.com/shixiangwan/category/1083872.html">深度学习(15)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_5" href="http://www.cnblogs.com/shixiangwan/category/986082.html">算法学习(19)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_6" href="http://www.cnblogs.com/shixiangwan/category/903049.html">网站开发(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_7" href="http://www.cnblogs.com/shixiangwan/category/903058.html">一些日记(6)</a> </li>
+
+</ul>
+
+</div>
+
+<div class="catListPostArchive">
+<h3 class="catListTitle">随笔档案<span style="font-size:11px;font-weight:normal">(85)</span></h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_1_Link_0" href="http://www.cnblogs.com/shixiangwan/archive/2018/05.html">2018年5月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_1" href="http://www.cnblogs.com/shixiangwan/archive/2017/12.html">2017年12月 (8)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_2" href="http://www.cnblogs.com/shixiangwan/archive/2017/11.html">2017年11月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_3" href="http://www.cnblogs.com/shixiangwan/archive/2017/09.html">2017年9月 (20)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_4" href="http://www.cnblogs.com/shixiangwan/archive/2017/08.html">2017年8月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_5" href="http://www.cnblogs.com/shixiangwan/archive/2017/07.html">2017年7月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_6" href="http://www.cnblogs.com/shixiangwan/archive/2017/06.html">2017年6月 (4)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_7" href="http://www.cnblogs.com/shixiangwan/archive/2017/05.html">2017年5月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_8" href="http://www.cnblogs.com/shixiangwan/archive/2017/04.html">2017年4月 (14)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_9" href="http://www.cnblogs.com/shixiangwan/archive/2017/03.html">2017年3月 (7)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_10" href="http://www.cnblogs.com/shixiangwan/archive/2017/02.html">2017年2月 (7)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_11" href="http://www.cnblogs.com/shixiangwan/archive/2017/01.html">2017年1月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_12" href="http://www.cnblogs.com/shixiangwan/archive/2016/12.html">2016年12月 (8)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_13" href="http://www.cnblogs.com/shixiangwan/archive/2016/11.html">2016年11月 (1)</a> </li>
+
+</ul>
+
+</div>
+
+<div class="catListImageCategory">
+<h3 class="catListTitle">相册<span style="font-size:11px;font-weight:normal">(2)</span></h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_2_Link_0" href="http://www.cnblogs.com/shixiangwan/gallery/1083939.html" rel="nofollow">壁纸(2)</a> </li>
+
+</ul>
+
+</div>
+
+</div><div id="sidebar_scorerank" class="sidebar-block">
+<div class="catListBlogRank">
+<h3 class="catListTitle">积分与排名</h3>
+<ul>
+	<li class="liScore">
+		积分 -	48811
+	</li>
+	<li class="liRank">
+		排名 -	7994
+	</li>
+</ul>
+</div>
+
+
+</div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap">
+<div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+	<div id="RecentCommentsBlock"><ul>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/shixiangwan/p/6406777.html#3969744">1. Re:远程编写+调试服务器上的Python程序</a></li>
+        <li class="recent_comment_body">@此时感谢建议~...</li>
+        <li class="recent_comment_author">--蓝鲸王子</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/shixiangwan/p/7532830.html#3969707">2. Re:常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等）</a></li>
+        <li class="recent_comment_body">牛牛牛牛</li>
+        <li class="recent_comment_author">--无空0214</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/shixiangwan/p/7532830.html#3960367">3. Re:常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等）</a></li>
+        <li class="recent_comment_body">厉害  感谢博主分享！！！</li>
+        <li class="recent_comment_author">--jiahcen</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/shixiangwan/p/7532858.html#3944954">4. Re:深度解读最流行的优化算法：梯度下降</a></li>
+        <li class="recent_comment_body">@行者无疆者行感谢指出，已修正哈！...</li>
+        <li class="recent_comment_author">--蓝鲸王子</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/shixiangwan/p/7532858.html#3941111">5. Re:深度解读最流行的优化算法：梯度下降</a></li>
+        <li class="recent_comment_body">文章中的图显示不出来？</li>
+        <li class="recent_comment_author">--行者无疆者行</li>
+</ul>
+</div>
+</div>
+</div></div><div id="sidebar_topviewedposts" class="sidebar-block"><div id="topview_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock"><ul><li><a href="http://www.cnblogs.com/shixiangwan/p/7532830.html">1. 常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等）(5196)</a></li><li><a href="http://www.cnblogs.com/shixiangwan/p/6018805.html">2. 关于英语PETS5备考的一些事(3798)</a></li><li><a href="http://www.cnblogs.com/shixiangwan/p/6403705.html">3. 记一次CUDA编程任务(3536)</a></li><li><a href="http://www.cnblogs.com/shixiangwan/p/7215926.html">4. Precision/Recall、ROC/AUC、AP/MAP等概念区分(2786)</a></li><li><a href="http://www.cnblogs.com/shixiangwan/p/7573589.html">5. Deep Learning基础--理解LSTM/RNN中的Attention机制(2644)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topcommentedposts" class="sidebar-block"><div id="topfeedback_posts_wrap">
+<div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="http://www.cnblogs.com/shixiangwan/p/6403705.html">1. 记一次CUDA编程任务(4)</a></li><li><a href="http://www.cnblogs.com/shixiangwan/p/7532858.html">2. 深度解读最流行的优化算法：梯度下降(2)</a></li><li><a href="http://www.cnblogs.com/shixiangwan/p/7532830.html">3. 常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等）(2)</a></li><li><a href="http://www.cnblogs.com/shixiangwan/p/6406777.html">4. 远程编写+调试服务器上的Python程序(2)</a></li><li><a href="http://www.cnblogs.com/shixiangwan/p/7256311.html">5. Anaconda 2和3在Win10上共存(1)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topdiggedposts" class="sidebar-block"><div id="topdigg_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">推荐排行榜</h3>
+<div id="TopDiggPostsBlock"><ul><li><a href="http://www.cnblogs.com/shixiangwan/p/7532830.html">1. 常见的几种最优化方法（梯度下降法、牛顿法、拟牛顿法、共轭梯度法等）(6)</a></li><li><a href="http://www.cnblogs.com/shixiangwan/p/6403705.html">2. 记一次CUDA编程任务(2)</a></li><li><a href="http://www.cnblogs.com/shixiangwan/p/6379710.html">3. For循环中不可以嵌套RDD操作(1)</a></li><li><a href="http://www.cnblogs.com/shixiangwan/p/6253032.html">4. Windows下搭建Spark+Hadoop开发环境(1)</a></li><li><a href="http://www.cnblogs.com/shixiangwan/p/7573589.html">5. Deep Learning基础--理解LSTM/RNN中的Attention机制(1)</a></li></ul></div>
+</div></div></div></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2018 蓝鲸王子
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+<!--PageEndHtml Block Begin-->
+<div class="scrollBtn" id="scrollBtn">
+  <ul class="clearfix"><li class="sB-goTop" id="goTop" style="display: list-item">
+      <a href="https://www.cnblogs.com/shixiangwan/p/7532830.html#top" title="回顶部"></a>
+    </li>
+  </ul>
+</div>
+<!--PageEndHtml Block End-->
+
+
+<div id="HUABAN_WIDGETS"><div class="HUABAN-f-button" style="display: none; left: 328px; top: 5952px;">采集</div><style>#HUABAN_WIDGETS  {font-family: "helvetica neue",arial,sans-serif; color: #444; font-size: 14px;} #HUABAN_WIDGETS * {box-sizing: content-box;} #HUABAN_WIDGETS .HUABAN-main {position: fixed; left: 0; top: 0; width: 100%; height: 100%; background: #e5e5e5; background: rgba(229,229,229,.95); max-height: 100%; overflow: hidden; z-index: 9999999999999;} #HUABAN_WIDGETS a img {border: 0;} #HUABAN_WIDGETS .HUABAN-header {height: 50px; background: white; box-shadow: 0 0 4px rgba(0,0,0,.2); width: 100%; left: 0; top: 0; position: absolute;} #HUABAN_WIDGETS .HUABAN-header .HUABAN-inner {margin: 0 auto; position: relative;} #HUABAN_WIDGETS .HUABAN-header .HUABAN-close {width: 60px; height: 50px; border-left: 1px solid #ddd; position: absolute; right: 0; top: 0; background: url(https://huaban.com/img/widgets/btn_close.png) 20px 14px no-repeat; cursor: pointer;} #HUABAN_WIDGETS .HUABAN-header .HUABAN-close:hover {background-position: 20px -26px;} #HUABAN_WIDGETS .HUABAN-header .HUABAN-close:active {background-position: 20px -66px;} #HUABAN_WIDGETS .HUABAN-header .HUABAN-logo {display: block; position: absolute; top: 12px;} #HUABAN_WIDGETS .HUABAN-waterfall-holder {position: relative; overflow-y: auto; height: 100%;} #HUABAN_WIDGETS .HUABAN-waterfall {position: relative; margin-top: 50px;} #HUABAN_WIDGETS .HUABAN-waterfall .HUABAN-empty {position: absolute; left: 50%; top: 30px; height: 36px; line-height: 36px; width: 216px; text-align: left; margin-left: -128px; color: #777; background: url(https://huaban.com/img/widgets/icon_notice.png) 12px 8px no-repeat white; padding-left: 40px; font-size: 15px;} #HUABAN_WIDGETS .HUABAN-btn {display: inline-block; border-radius: 2px; font-size: 14px; padding: 0 12px; height: 30px; line-height: 30px; cursor: pointer; text-decoration: none; white-space: nowrap; -moz-user-select: none; -webkit-user-select: none; user-select: none; text-align: center; background: #D53939; color: white;} #HUABAN_WIDGETS .HUABAN-btn:hover {background: #E54646;} #HUABAN_WIDGETS .HUABAN-btn:active {background: #C52424;} #HUABAN_WIDGETS .HUABAN-wbtn {background: #EDEDED; color: #444;} #HUABAN_WIDGETS .HUABAN-wbtn:hover {background: #F2F2F2;} #HUABAN_WIDGETS .HUABAN-wbtn:active {background: #DDD;} #HUABAN_WIDGETS .HUABAN-f-button {position: absolute; display: none; z-index: 9999999999998; box-shadow: 0 0 0 2px rgba(255,255,255,.2); background: #aaa; background: rgba(0,0,0,.3); color: white; cursor: pointer; padding: 0 12px; height: 30px; line-height: 30px; border-radius: 2px; font-size: 14px} #HUABAN_WIDGETS .HUABAN-f-button:hover {background-color: #999; background-color: rgba(0,0,0,.5);} #HUABAN_WIDGETS .HUABAN-f-button:active {background-color: rgba(0,0,0,.6);} #HUABAN_WIDGETS .HUABAN-red-normal-icon-button {width: 36px; height: 24px; border: 0px; line-height: 24px; padding-left: 24px; padding-right: 0px; text-align: left; background: url(https://huaban.com/img/widgets/widget_icons.png) 0 -200px no-repeat; box-shadow: none !important; font-size: 14px; background-color: transparent !important;} #HUABAN_WIDGETS .HUABAN-red-normal-icon-button:hover {background-position: -130px -200px;} #HUABAN_WIDGETS .HUABAN-red-normal-icon-button:active {background-position: -260px -200px;} #HUABAN_WIDGETS .HUABAN-red-large-icon-button {width: 80px; height: 24px; border: 0px; line-height: 24px; padding-left: 24px; padding-right: 0px; text-align: left; background: url(https://huaban.com/img/widgets/widget_icons.png) 0 -150px no-repeat; box-shadow: none !important; font-size: 14px; background-color: transparent !important;} #HUABAN_WIDGETS .HUABAN-red-large-icon-button:hover {background-position: -130px -150px;} #HUABAN_WIDGETS .HUABAN-red-large-icon-button:active {background-position: -260px -150px;} #HUABAN_WIDGETS .HUABAN-red-small-icon-button {width: 30px; height: 21px; border: 0px; line-height: 21px; padding-left: 20px; padding-right: 0px; text-align: left; background: url(https://huaban.com/img/widgets/widget_icons.png) 0 -250px no-repeat; box-shadow: none !important; font-size: 12px; background-color: transparent !important;} #HUABAN_WIDGETS .HUABAN-red-small-icon-button:hover {background-position: -130px -250px;} #HUABAN_WIDGETS .HUABAN-red-small-icon-button:active {background-position: -260px -250px;} #HUABAN_WIDGETS .HUABAN-white-normal-icon-button {width: 36px; height: 24px; border: 0px; line-height: 24px; padding-left: 24px; padding-right: 0px; text-align: left; background: url(https://huaban.com/img/widgets/widget_icons.png) 0 -500px no-repeat; box-shadow: none !important; color: #444; font-size: 14px; background-color: transparent !important;} #HUABAN_WIDGETS .HUABAN-white-normal-icon-button:hover {background-position: -130px -500px;} #HUABAN_WIDGETS .HUABAN-white-normal-icon-button:active {background-position: -260px -500px;} #HUABAN_WIDGETS .HUABAN-white-large-icon-button {width: 80px; height: 24px; border: 0px; line-height: 24px; padding-left: 24px; padding-right: 0px; text-align: left; background: url(https://huaban.com/img/widgets/widget_icons.png) 0 -450px no-repeat; box-shadow: none !important; color: #444; font-size: 14px; background-color: transparent !important;} #HUABAN_WIDGETS .HUABAN-white-large-icon-button:hover {background-position: -130px -450px;} #HUABAN_WIDGETS .HUABAN-white-large-icon-button:active {background-position: -260px -450px;} #HUABAN_WIDGETS .HUABAN-white-small-icon-button {width: 30px; height: 21px; border: 0px; line-height: 21px; padding-left: 20px; padding-right: 0px; text-align: left; background: url(https://huaban.com/img/widgets/widget_icons.png) 0 -550px no-repeat; box-shadow: none !important; color: #444; font-size: 12px; background-color: transparent !important;} #HUABAN_WIDGETS .HUABAN-white-small-icon-button:hover {background-position: -130px -550px;} #HUABAN_WIDGETS .HUABAN-white-small-icon-button:active {background-position: -260px -550px;} #HUABAN_WIDGETS .HUABAN-cell {width: 236px; position: absolute; background: white; box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: left .3s ease-in-out, top .3s linear;} #HUABAN_WIDGETS .HUABAN-cell .HUABAN-img-holder {overflow: hidden; position: relative;} #HUABAN_WIDGETS .HUABAN-cell .HUABAN-img-holder:hover img.HUABAN-cell-img {opacity: .8} #HUABAN_WIDGETS .HUABAN-cell .HUABAN-video-icon {width: 72px; height: 62px; position: absolute; left: 50%; top: 50%; margin: -31px auto auto -36px; background: url(https://huaban.com/img/widgets/media_video.png) 0 0 no-repeat; display: none;} #HUABAN_WIDGETS .HUABAN-cell.HUABAN-video .HUABAN-video-icon {display: block;} #HUABAN_WIDGETS .HUABAN-cell .HUABAN-over {display: none;} #HUABAN_WIDGETS .HUABAN-cell:hover .HUABAN-over {display: block;} #HUABAN_WIDGETS .HUABAN-cell .HUABAN-over .HUABAN-btn {width: 60px; height: 34px; padding: 0; position: absolute; left: 50%; top: 50%; margin: -18px 0 0 -31px; line-height: 34px; box-shadow: 0 0 0 2px rgba(255,255,255,.2); font-size: 16px;} #HUABAN_WIDGETS .HUABAN-cell.HUABAN-long .HUABAN-img-holder {height: 600px;} #HUABAN_WIDGETS .HUABAN-cell.HUABAN-long .HUABAN-img-holder:after {content: ""; display: block; position: absolute; width: 236px; height: 12px; left: 0; bottom: 0; background: url(https://huaban.com/img/widgets/long_image_shadow_2.png) repeat-x 4px top;} #HUABAN_WIDGETS .HUABAN-cell img {width: 236px; display: block;} #HUABAN_WIDGETS .HUABAN-cell .HUABAN-size {margin: 8px 16px; font-size: 12px; color: #999} #HUABAN_WIDGETS .HUABAN-cell .HUABAN-description {display: block; width: 202px; margin: 0 6px 6px; padding: 6px 10px; border: 0; resize: none; outline: 0; border: 1px solid transparent; line-height: 18px; font-size: 13px; overflow: hidden; word-wrap: break-word; background: url(https://huaban.com/img/widgets/icon_edit.png) 500px center no-repeat;} #HUABAN_WIDGETS .HUABAN-cell:hover .HUABAN-description {background-color: #fff9e0; background-position: right top;} #HUABAN_WIDGETS .HUABAN-cell .HUABAN-description:focus {background-color: #F9F9F9; background-position: 500px center;} #HUABAN_WIDGETS .HUABAN-cell .HUABAN-select-btn {width: 34px; height:34px; background: url(https://huaban.com/img/widgets/checkbox.png) 0 0 no-repeat; position: absolute; right: 5px; top: 5px; cursor: pointer;} #HUABAN_WIDGETS .HUABAN-cell .HUABAN-pinned-label {position: absolute; left: 0; top: 10px; height: 24px; line-height: 24px; padding: 0 10px; background: #CE0000; background: rgba(200, 0, 0, 0.9); color: white; font-size: 12px; display: none;} #HUABAN_WIDGETS .HUABAN-cell.HUABAN-pinned .HUABAN-pinned-label {display: block;} #HUABAN_WIDGETS .HUABAN-selected .HUABAN-select-btn {background-position: 0 -40px;} #HUABAN_WIDGETS .HUABAN-multi .HUABAN-cell .HUABAN-img-holder {cursor: pointer;} #HUABAN_WIDGETS .HUABAN-multi .HUABAN-cell .HUABAN-cell-pin-btn {display: none;} #HUABAN_WIDGETS .HUABAN-multi .HUABAN-cell .HUABAN-over {display: block;} #HUABAN_WIDGETS .HUABAN-header .HUABAN-multi-buttons {position: absolute; top: 10px; left: 0; display: none;} #HUABAN_WIDGETS .HUABAN-header .HUABAN-multi-buttons .HUABAN-btn {margin-right: 10px;} #HUABAN_WIDGETS .HUABAN-header .HUABAN-multi-noti {display: none; height: 50px; line-height: 50px; text-align: center; font-size: 16px; color: #999; font-weight: bold;} #HUABAN_WIDGETS .HUABAN-header .HUABAN-multi-noti span {font-weight: normal;} #HUABAN_WIDGETS .HUABAN-header .HUABAN-multi-noti i {font-style: normal;} #HUABAN_WIDGETS .HUABAN-header .HUABAN-notice {padding: 0 10px; height:30px; line-height: 30px; position: absolute; left: 50%; top: 10px; margin-left: -83px; background: #fff9e2; text-align: center;} #HUABAN_WIDGETS .HUABAN-header .HUABAN-notice i {display: inline-block; width: 18px; height: 18px; background: url(https://huaban.com/img/widgets/icon_notice.png) 0 0 no-repeat; vertical-align: top; margin: 6px 6px 0 0;} #HUABAN_WIDGETS .HUABAN-switcher {height: 50px; width: 100px; position: relative;} #HUABAN_WIDGETS .HUABAN-switcher .HUABAN-title {position: absolute; right: 75px; top: 13px; color: #999; white-space: nowrap; line-height: 24px; opacity: 0; visibility: hidden;} #HUABAN_WIDGETS .HUABAN-switcher:hover .HUABAN-title {visibility: visible; opacity: 1; -webkit-transition: opacity .2s linear; -webkit-transition-delay: .2s; transition: opacity .2s linear; transition-delay: .2s;} #HUABAN_WIDGETS .HUABAN-switcher .HUABAN-bar {width: 40px; height: 24px; background: #EB595F; border-radius: 12px; color: white; position: absolute; right: 0; top: 13px; cursor: pointer; font-size: 14px; -webkit-transition: all .2s linear; transition: all .2s linear;} #HUABAN_WIDGETS .HUABAN-switcher:hover .HUABAN-bar {width: 64px;} #HUABAN_WIDGETS .HUABAN-switcher.HUABAN-on .HUABAN-bar {background: #7DD100;} #HUABAN_WIDGETS .HUABAN-switcher .HUABAN-bar .HUABAN-round {width: 20px; height: 20px; background: white; border-radius: 50%; position: absolute; left: 2px; top: 2px; -webkit-transition: left .2s linear; box-shadow: 0px 0px 3px rgba(0,0,0,0.15); transition: left .2s linear; box-shadow: 0px 0px 3px rgba(0,0,0,0.15);} #HUABAN_WIDGETS .HUABAN-switcher.HUABAN-on .HUABAN-bar .HUABAN-round {left: 17px;} #HUABAN_WIDGETS .HUABAN-switcher.HUABAN-on:hover .HUABAN-bar .HUABAN-round {left: 41px;} #HUABAN_WIDGETS .HUABAN-switcher .HUABAN-bar .HUABAN-text-1 {height: 24px; line-height: 24px; position: absolute; right:17px; top: 0; opacity: 0; visibility: hidden; -webkit-transition: all .2s linear; transition: all .2s linear;} #HUABAN_WIDGETS .HUABAN-switcher:hover .HUABAN-bar .HUABAN-text-1 {right: 9px; opacity: 1; visibility: visible;} #HUABAN_WIDGETS .HUABAN-switcher.HUABAN-on:hover .HUABAN-bar .HUABAN-text-1 {right: 17px; opacity: 0; visibility: hidden;} #HUABAN_WIDGETS .HUABAN-switcher .HUABAN-bar .HUABAN-text-2 {height: 24px; line-height: 24px; position: absolute; left:17px; top: 0; opacity: 0; visibility: hidden; -webkit-transition: all .2s linear; transition: all .2s linear;} #HUABAN_WIDGETS .HUABAN-switcher:hover .HUABAN-bar .HUABAN-text-2 {left: 17px; opacity: 0; visibility: hidden;} #HUABAN_WIDGETS .HUABAN-switcher.HUABAN-on:hover .HUABAN-bar .HUABAN-text-2 {left: 9px; opacity: 1; visibility: visible;} #HUABAN_WIDGETS .HUABAN-header .HUABAN-switcher {position: absolute; right: 0; top: 0;} <!--[if IE 6]>#HUABAN_WIDGETS .HUABAN-red-normal-icon-button, .HUABAN-red-large-icon-button, .HUABAN-red-small-icon-button, .HUABAN-white-normal-icon-button, .HUABAN-white-large-icon-button, .HUABAN-white-small-icon-button { background-image: url({{imgBase}}/widget_icons_ie6.png) <![endif]--></style></div></body></html>
